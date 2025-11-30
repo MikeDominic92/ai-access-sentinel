@@ -1,24 +1,28 @@
-# AI Access Sentinel
+# AI Access Sentinel - Identity Threat Detection and Response (ITDR) Platform
 
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-orange.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-> Machine Learning-powered anomaly detection and predictive identity governance for modern IAM systems
+> Machine Learning-powered ITDR platform with UEBA, anomaly detection, and predictive identity governance for modern zero-trust environments
 
 ## Overview
 
-AI Access Sentinel is an advanced Identity and Access Management (IAM) solution that leverages machine learning to detect anomalous access patterns, predict access risks, and discover hidden role structures. It combines traditional IAM principles with modern ML techniques to provide intelligent, proactive security monitoring.
+AI Access Sentinel is an advanced Identity Threat Detection and Response (ITDR) platform that leverages machine learning and User and Entity Behavior Analytics (UEBA) to detect identity-based threats, predict access risks, and discover hidden role structures. It combines traditional IAM principles with modern ML techniques to provide intelligent, proactive security monitoring and real-time identity threat detection.
+
+**What is ITDR?**
+Identity Threat Detection and Response (ITDR) is a cybersecurity category focused on defending against identity-based attacks - the leading attack vector in modern breaches. ITDR solutions monitor identity systems, detect credential compromise, privilege escalation, and lateral movement, then respond with automated remediation.
 
 ## Motivation
 
-Traditional IAM systems are reactive - they enforce policies but don't predict threats. As organizations grow, access patterns become complex and manual review becomes impossible. This project demonstrates:
+Traditional IAM systems are reactive - they enforce policies but don't predict identity-based threats. As organizations grow, the identity attack surface expands and manual review becomes impossible. This ITDR platform demonstrates:
 
-- **AI/ML convergence with IAM**: Using data science to enhance identity security
-- **Proactive threat detection**: Identifying anomalies before they become breaches
+- **AI/ML convergence with IAM**: Using data science and UEBA to enhance identity security
+- **Proactive threat detection**: Identifying credential compromise and anomalies before they become breaches
 - **Intelligent role management**: Discovering actual vs. assigned roles through clustering
-- **Risk-based access control**: Dynamic risk scoring for adaptive security
+- **Risk-based access control**: Dynamic risk scoring for adaptive security and identity-based zero trust
+- **Identity threat response**: Automated detection and response to lateral movement and privilege escalation
 
 ## Architecture
 
@@ -97,6 +101,74 @@ Traditional IAM systems are reactive - they enforce policies but don't predict t
 - Deviation from peer behavior
 - Sensitive resource access
 - Policy violations
+
+## ITDR Capabilities
+
+AI Access Sentinel provides comprehensive Identity Threat Detection and Response capabilities:
+
+### Identity Attack Surface Monitoring
+- **Continuous visibility** into all identity-based access across the organization
+- **Real-time monitoring** of user and entity behavior patterns
+- **Attack path analysis** to identify potential lateral movement routes
+- **Privilege mapping** to understand the blast radius of compromised accounts
+
+### Credential Compromise Detection
+- **Anomalous authentication patterns**: Impossible travel, unusual times, new devices
+- **Suspicious access behavior**: Accessing resources never used before
+- **Brute force detection**: Multiple failed login attempts from same or different IPs
+- **Credential stuffing identification**: Same credentials used across multiple accounts
+
+### Privilege Escalation Prevention
+- **Peer-based access validation**: Compare requests against similar users
+- **Role deviation alerts**: Flag users with permissions outside their role cluster
+- **Temporary privilege tracking**: Monitor for privilege escalation attempts
+- **Administrative action monitoring**: Elevated scrutiny for admin-level operations
+
+### Lateral Movement Detection
+- **Cross-resource access patterns**: Identify unusual resource hopping
+- **Time-series behavioral analysis**: Detect rapid access to multiple systems
+- **Network segmentation awareness**: Flag access across security boundaries
+- **Entity relationship mapping**: Understand normal vs. abnormal access paths
+
+### Identity-Based Zero Trust
+- **Continuous authentication**: Real-time risk scoring for every access request
+- **Context-aware access control**: Location, time, device, behavior all factor into decisions
+- **Adaptive security posture**: Automatically increase scrutiny for high-risk users
+- **Just-in-time access validation**: Verify necessity for each access attempt
+
+### SIEM/SOAR Integration
+- **Structured alert format**: Easy integration with security operations platforms
+- **Automated response triggers**: Block/challenge high-risk access automatically
+- **Threat intelligence enrichment**: Correlate with external threat feeds
+- **Incident investigation support**: Detailed access forensics for IR teams
+
+## UEBA Features
+
+User and Entity Behavior Analytics (UEBA) powers the ITDR capabilities:
+
+### Behavioral Baselining
+- **Individual user profiles**: Learn normal patterns for each user (working hours, locations, resources)
+- **Peer group analysis**: Compare behavior against similar users (role, department, seniority)
+- **Entity behavior modeling**: Track service accounts, applications, and API usage
+- **Temporal pattern recognition**: Understand daily, weekly, and seasonal variations
+
+### Anomaly Detection
+- **Statistical outlier detection**: Identify behavior that deviates from established baselines
+- **Multi-dimensional analysis**: Consider time, location, resource, action, and context
+- **Anomaly severity scoring**: Prioritize alerts based on degree of deviation
+- **False positive reduction**: ML models adapt to reduce alert fatigue
+
+### Risk-Based Prioritization
+- **Dynamic risk scores**: User risk changes in real-time based on current behavior
+- **Contextual risk assessment**: Same action can be high-risk or normal based on context
+- **Risk aggregation**: Combine multiple low-risk events into high-risk patterns
+- **Automated triage**: Focus security teams on highest-risk activities
+
+### Advanced Analytics
+- **Graph-based access analysis**: Understand relationships between users, resources, and access patterns
+- **Sequence analysis**: Detect multi-step attack patterns (reconnaissance, access, exfiltration)
+- **Clustering and segmentation**: Automatically discover user groups and role patterns
+- **Predictive modeling**: Forecast future access needs and potential risks
 
 ## Getting Started
 
@@ -262,33 +334,59 @@ Response:
 
 ## Use Cases
 
-### 1. Insider Threat Detection
-**Scenario**: Employee starts accessing sensitive files outside normal hours.
+### 1. Credential Compromise Detection (ITDR)
+**Scenario**: Attacker compromises employee credentials through phishing.
 
-**Detection**: Anomaly detector flags unusual time + resource combination, risk score jumps to 85.
+**Detection**: UEBA detects impossible travel (login from US, then Russia 10 minutes later), unusual resource access, and abnormal time of access. Risk score jumps to 95.
 
-**Action**: Security team receives alert, reviews activity, discovers compromised credentials.
+**ITDR Response**: Automatically blocks access, forces password reset, triggers MFA verification, alerts SOC team.
 
-### 2. Privilege Escalation Prevention
-**Scenario**: User requests admin access to production database.
+**Outcome**: Credential-based attack stopped before lateral movement begins.
 
-**Analysis**: Access predictor checks peer group - 0% of similar users have this access.
+### 2. Insider Threat Detection (UEBA)
+**Scenario**: Employee planning to leave company starts accessing sensitive files outside normal hours.
 
-**Action**: Request automatically flagged for manual review with context.
+**Detection**: Anomaly detector flags unusual time + resource combination + volume spike. UEBA identifies deviation from established baseline.
 
-### 3. Role Optimization
-**Scenario**: Company has 200+ custom roles, many overlapping.
+**Action**: Security team receives high-priority alert, reviews activity timeline, discovers data exfiltration attempt.
 
-**Discovery**: Role mining clusters users into 15 natural groups based on actual access.
+**Outcome**: Insider threat neutralized, access revoked, incident documented for legal team.
 
-**Action**: IAM team consolidates roles, reducing complexity by 85%.
+### 3. Privilege Escalation Prevention (ITDR)
+**Scenario**: Compromised low-privilege account attempts to request admin access to production database.
 
-### 4. Compliance Monitoring
-**Scenario**: Need to identify users with excessive privileges.
+**Analysis**: Access predictor checks peer group - 0% of similar users have this access. ITDR detects privilege escalation pattern.
 
-**Analysis**: Risk scorer identifies top 10% of users with abnormal access patterns.
+**Action**: Request automatically denied, SOC alerted, account flagged for investigation.
 
-**Action**: Automated access recertification triggered for high-risk users.
+**Outcome**: Lateral movement blocked at privilege escalation stage.
+
+### 4. Lateral Movement Detection (ITDR)
+**Scenario**: Attacker moves from compromised marketing account to finance systems.
+
+**Detection**: UEBA detects unusual cross-departmental resource access pattern. Sequence analysis identifies reconnaissance-to-access pattern typical of lateral movement.
+
+**ITDR Response**: Isolate account, block access to additional resources, initiate incident response.
+
+**Outcome**: Attack contained to single compromised account, no data breach.
+
+### 5. Role Optimization
+**Scenario**: Company has 200+ custom roles, many overlapping, creating identity attack surface bloat.
+
+**Discovery**: Role mining clusters users into 15 natural groups based on actual access. Identifies 85 ghost permissions and 30 over-privileged accounts.
+
+**Action**: IAM team consolidates roles, reducing complexity by 85% and shrinking identity attack surface.
+
+**Outcome**: Simplified access management, reduced risk, improved compliance posture.
+
+### 6. Compliance Monitoring
+**Scenario**: Need to identify users with excessive privileges for SOX/HIPAA compliance.
+
+**Analysis**: Risk scorer identifies top 10% of users with abnormal access patterns. UEBA flags users accessing sensitive data outside job requirements.
+
+**Action**: Automated access recertification triggered for high-risk users, audit trail generated.
+
+**Outcome**: Compliance requirements met, excessive privileges revoked, documented remediation.
 
 ## Project Structure
 
@@ -348,18 +446,21 @@ Services:
 - [x] Streamlit dashboard
 
 ### Phase 2 (Next)
-- [ ] UEBA (User and Entity Behavior Analytics) integration
-- [ ] Real-time streaming with Apache Kafka
-- [ ] Graph-based access analysis (NetworkX)
-- [ ] Deep learning models (LSTM for sequence analysis)
-- [ ] Integration with SIEM systems
+- [ ] Advanced UEBA features (entity behavior profiling, advanced peer analysis)
+- [ ] Real-time streaming with Apache Kafka for instant ITDR response
+- [ ] Graph-based identity attack path analysis (NetworkX)
+- [ ] Deep learning models (LSTM for attack sequence detection)
+- [ ] SIEM system integration (Splunk, Sentinel, QRadar)
+- [ ] Threat intelligence feed integration for credential compromise detection
 
 ### Phase 3 (Future)
-- [ ] SOAR (Security Orchestration) integration
-- [ ] Automated remediation workflows
-- [ ] Natural language policy queries
-- [ ] Multi-tenant support
-- [ ] Cloud IAM integration (AWS IAM, Azure AD)
+- [ ] SOAR (Security Orchestration) integration for automated ITDR workflows
+- [ ] Automated remediation and response playbooks
+- [ ] Natural language policy queries and threat hunting
+- [ ] Multi-tenant ITDR support for MSPs
+- [ ] Cloud IAM integration (AWS IAM Identity Center, Azure AD, Okta)
+- [ ] Identity attack surface reduction recommendations
+- [ ] Zero trust architecture scoring and recommendations
 
 ## Contributing
 

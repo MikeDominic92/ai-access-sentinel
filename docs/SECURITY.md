@@ -1,7 +1,7 @@
 # Security Considerations
 
 ## Overview
-AI Access Sentinel is a security tool itself, so its own security is paramount. This document outlines security considerations, best practices, and potential vulnerabilities.
+AI Access Sentinel is an Identity Threat Detection and Response (ITDR) platform, so its own security is paramount. This document outlines security considerations, ITDR-specific threat scenarios, identity attack chain prevention, and best practices.
 
 ## Data Security
 
@@ -30,6 +30,187 @@ AI Access Sentinel processes sensitive IAM data including:
 - Don't log more than needed for detection
 - Anonymize user IDs in non-production environments
 - Remove unnecessary metadata before storage
+
+## ITDR-Specific Threat Scenarios
+
+### Credential Compromise Attacks
+
+#### Scenario 1: Phishing + Credential Theft
+**Attack Vector**: Attacker phishes employee credentials, logs in from attacker-controlled infrastructure.
+
+**ITDR Detection**:
+- Anomaly detector flags: Unusual location, new device, abnormal time
+- UEBA detects: Deviation from established behavioral baseline
+- Risk score: Jumps from 20 → 95 (CRITICAL)
+
+**Response**:
+- Automatically block access
+- Force password reset + MFA enrollment
+- Alert SOC team for investigation
+- Terminate all active sessions
+
+#### Scenario 2: Credential Stuffing Attack
+**Attack Vector**: Attacker uses leaked credentials from other breaches to test against corporate systems.
+
+**ITDR Detection**:
+- Multiple failed authentication attempts from distributed IPs
+- Successful login with unusual behavioral pattern
+- Access to resources never previously accessed
+
+**Response**:
+- Block IP ranges with high failure rates
+- Force MFA for affected accounts
+- Alert identity team to enable breach password detection
+
+#### Scenario 3: Token Theft and Replay
+**Attack Vector**: Attacker steals session token or API key, replays to access systems.
+
+**ITDR Detection**:
+- Same token used from multiple geographic locations simultaneously
+- API usage pattern deviates from normal (volume, timing, endpoints)
+- Impossible travel detected (token used from US, then China within minutes)
+
+**Response**:
+- Invalidate stolen tokens immediately
+- Force re-authentication with MFA
+- Audit all actions performed with compromised token
+
+### Privilege Escalation Attacks
+
+#### Scenario 1: Exploiting Role Assignment Weakness
+**Attack Vector**: Attacker with low-privilege account requests elevated permissions, exploiting approval workflow weaknesses.
+
+**ITDR Detection**:
+- Access predictor flags: 0% of peer group has this access
+- Risk scorer identifies: User is outside expected role cluster
+- Pattern match: Privilege escalation attack signature
+
+**Response**:
+- Deny access request automatically
+- Require manager + security approval for exceptions
+- Flag account for monitoring
+- Review recent activity for reconnaissance patterns
+
+#### Scenario 2: Accumulating Privileges Over Time (Privilege Creep)
+**Attack Vector**: Insider slowly accumulates excessive permissions over months/years.
+
+**ITDR Detection**:
+- Role mining identifies: User doesn't fit any natural cluster
+- Peer comparison: User has 3x more access than similar roles
+- Risk scorer: Persistent "over-privileged" flag
+
+**Response**:
+- Trigger access recertification workflow
+- Recommend role consolidation
+- Implement least privilege recommendations
+- Monitor for abuse of excess privileges
+
+### Lateral Movement Attacks
+
+#### Scenario 1: Cross-Department Resource Access
+**Attack Vector**: Attacker moves from compromised marketing account to finance systems.
+
+**ITDR Detection**:
+- UEBA flags: Unusual cross-departmental access pattern
+- Sequence analysis: Reconnaissance → Access → Exfiltration pattern
+- Resource access: Never accessed finance systems before
+
+**Response**:
+- Isolate account from additional resource access
+- Block cross-boundary access attempts
+- Initiate incident response
+- Forensic analysis of all accessed resources
+
+#### Scenario 2: Rapid Multi-System Access
+**Attack Vector**: Automated attack tool rapidly accesses multiple systems looking for valuable data.
+
+**ITDR Detection**:
+- Time-series analysis: Abnormal spike in resource access rate
+- Behavioral baseline deviation: 10x normal access volume
+- Pattern recognition: Automated tool signature detected
+
+**Response**:
+- Rate limit account access
+- Kill active sessions
+- Block further authentication
+- Alert SOC for immediate investigation
+
+### Insider Threat Scenarios
+
+#### Scenario 1: Data Exfiltration Before Resignation
+**Attack Vector**: Employee planning to leave downloads confidential data.
+
+**ITDR Detection**:
+- Anomaly detector: Unusual volume of file downloads
+- UEBA: Access to resources not part of current job function
+- Time-based pattern: Outside normal working hours
+- Peer deviation: Accessing 10x more files than similar users
+
+**Response**:
+- Alert security team immediately
+- Review downloaded files for sensitivity
+- Restrict bulk download capabilities
+- Document for legal/HR action
+
+#### Scenario 2: Abuse of Administrative Privileges
+**Attack Vector**: Disgruntled admin creates backdoor accounts or modifies access controls.
+
+**ITDR Detection**:
+- Admin activity monitoring: Unusual account creation pattern
+- Audit log analysis: Permission modifications outside change windows
+- Behavioral deviation: Actions not typical for this admin
+
+**Response**:
+- Immediate review of all admin actions
+- Rollback unauthorized changes
+- Escalate to senior security leadership
+- Implement dual-control for admin actions
+
+### Identity Attack Chain Prevention
+
+AI Access Sentinel disrupts attacks at every stage:
+
+```
+Attack Stage          | ITDR Detection                | Response Action
+---------------------|-------------------------------|---------------------------
+1. Initial Access     | Credential compromise         | Block + Reset + MFA
+   (Phishing)         | Anomalous login patterns      |
+                      |                               |
+2. Reconnaissance     | Unusual resource enumeration  | Alert + Monitor
+   (Discovery)        | Access to rarely-used systems |
+                      |                               |
+3. Privilege          | Peer-based validation         | Deny + Alert
+   Escalation         | Role deviation detection      |
+                      |                               |
+4. Lateral Movement   | Cross-boundary access         | Isolate + Block
+   (Pivoting)         | Sequence pattern analysis     |
+                      |                               |
+5. Data Exfiltration  | Volume spike detection        | Kill session + Alert
+   (Theft)            | Unusual data access patterns  |
+                      |                               |
+6. Persistence        | New account creation          | Audit + Remove
+   (Backdoor)         | Permission modification       |
+```
+
+### Zero Trust Identity Threats
+
+#### Continuous Authentication Bypass
+**Threat**: Attacker attempts to bypass continuous authentication checks.
+
+**ITDR Mitigation**:
+- Real-time risk scoring for every access request
+- Behavioral analysis detects attempts to mimic normal patterns
+- Step-up authentication for suspicious activities
+- Session monitoring and anomaly-based termination
+
+#### Token Theft in Zero Trust Architecture
+**Threat**: In Zero Trust, tokens are valuable targets for lateral movement.
+
+**ITDR Mitigation**:
+- Token usage behavioral analysis
+- Detect token replay from unusual contexts
+- Short-lived tokens with continuous validation
+- Device binding and geo-fencing
 
 ## Model Security
 
