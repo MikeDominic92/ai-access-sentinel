@@ -78,6 +78,8 @@ Traditional IAM systems are reactive - they enforce policies but don't predict i
 - **Isolation Forest**: Identifies outliers by randomly splitting data (like finding a red apple in a basket of green ones)
 - **One-Class SVM**: Learns what "normal" looks like and flags anything different
 - **Local Outlier Factor**: Compares each event to its neighbors to find odd ones out
+- **LSTM (Deep Learning)**: Analyzes sequences of access events to detect multi-step attack patterns
+- **Transformer (Deep Learning)**: Uses attention mechanism to identify which features matter most
 
 ### 2. Access Prediction
 **What it does**: Recommends whether an access request should be approved.
@@ -101,6 +103,27 @@ Traditional IAM systems are reactive - they enforce policies but don't predict i
 - Deviation from peer behavior
 - Sensitive resource access
 - Policy violations
+
+### 5. Deep Learning Models (Advanced)
+**What they do**: Detect complex patterns that traditional ML might miss.
+
+**LSTM (Long Short-Term Memory)**:
+- Analyzes sequences of access events over time
+- Detects multi-step attack patterns (reconnaissance -> access -> exfiltration)
+- Good for: Temporal analysis, attack chains, gradual privilege escalation
+- Example: Detecting an attacker who first explores systems, then accesses sensitive data, then attempts download
+
+**Transformer (Attention-based)**:
+- Identifies which features are most important for each decision
+- Provides interpretable anomaly detection
+- Good for: Feature analysis, context-aware detection, understanding why something is anomalous
+- Example: Shows that an access is suspicious due to combination of unusual time + location + resource type
+
+**When to Use Deep Learning**:
+- Multi-step attack detection: LSTM
+- Feature importance analysis: Transformer
+- Limited data or quick baseline: Isolation Forest
+- Production deployment: Ensemble of all models
 
 ## ITDR Capabilities
 
@@ -472,19 +495,22 @@ Services:
 
 ## Roadmap
 
-### Phase 1 (Current)
+### Phase 1 (Completed)
 - [x] Anomaly detection with Isolation Forest
 - [x] Access prediction with Random Forest
 - [x] Role mining with K-Means
 - [x] Risk scoring engine
 - [x] FastAPI REST API
 - [x] Streamlit dashboard
+- [x] Deep learning models (LSTM and Transformer)
+- [x] Multi-step attack pattern detection
+- [x] Attention-based feature analysis
 
 ### Phase 2 (Next)
 - [ ] Advanced UEBA features (entity behavior profiling, advanced peer analysis)
 - [ ] Real-time streaming with Apache Kafka for instant ITDR response
 - [ ] Graph-based identity attack path analysis (NetworkX)
-- [ ] Deep learning models (LSTM for attack sequence detection)
+- [ ] Deep learning model ensemble for production
 - [ ] SIEM system integration (Splunk, Sentinel, QRadar)
 - [ ] Threat intelligence feed integration for credential compromise detection
 

@@ -172,6 +172,168 @@ ITDR Response:
 **Why this enables ITDR:**
 Real-time risk scoring enables **identity-based zero trust**. Every access request is evaluated based on current risk, not just static permissions. High-risk users get step-up authentication or blocked entirely - even with valid credentials.
 
+### 5. LSTM (Deep Learning) - "Remember the Story" (Advanced Threat Detection)
+
+**Analogy:** Like reading a mystery novel - each chapter builds on the last. LSTM remembers previous events to understand the full attack story.
+
+**How it works (ITDR context):**
+1. LSTM analyzes sequences of access events, not just individual events
+2. Remembers what happened earlier to understand what's happening now
+3. Detects multi-step attack patterns that unfold over time
+4. Identifies gradual privilege escalation and reconnaissance patterns
+
+**Real ITDR Example - Multi-Step Attack Detection:**
+```
+Timeline of attacker's actions:
+Hour 1: Access employee directory (normal)
+Hour 2: Access org chart (normal)
+Hour 3: Access IT systems list (slightly unusual)
+Hour 4: Access admin documentation (unusual)
+Hour 5: Attempt admin panel access (ALARM!)
+
+Traditional ML: Flags only Hour 5 as anomaly
+LSTM: Detects the entire pattern as reconnaissance -> escalation sequence
+ITDR Response: Block at Hour 3, before damage occurs
+```
+
+**Real ITDR Example - Insider Threat Timeline:**
+```
+Week 1-4: Normal behavior
+Week 5: Starts accessing files outside normal scope
+Week 6: Downloads increase 2x
+Week 7: After-hours access begins
+Week 8: Mass download attempt
+
+LSTM detects: Gradual behavior change indicating planned exfiltration
+Traditional ML: Only flags Week 8 (too late)
+ITDR Response: Alert security team at Week 6, prevent data theft
+```
+
+**Architecture:**
+Input sequence (last 10 access events) -> LSTM layers -> Prediction (normal or attack pattern)
+
+**Why this enables ITDR:**
+Detects sophisticated attacks that unfold gradually over hours or days. Attackers often use "low and slow" tactics to avoid detection - LSTM remembers the entire sequence and connects the dots. This is critical for detecting Advanced Persistent Threats (APTs) and insider threats that traditional point-in-time analysis misses.
+
+### 6. Transformer (Deep Learning) - "Pay Attention to What Matters" (Interpretable Detection)
+
+**Analogy:** Like a detective who knows which clues are most important. Transformer uses "attention" to focus on the most relevant features.
+
+**How it works (ITDR context):**
+1. Looks at all features of an access event
+2. Uses "attention mechanism" to determine which features matter most
+3. Explains WHY an event is flagged as anomalous
+4. Provides interpretable, actionable security insights
+
+**Real ITDR Example - Contextual Anomaly Detection:**
+```
+Access Event Features:
+- Time: 3:00 AM (unusual)
+- Location: Moscow (unusual)
+- Resource: Financial Database (sensitive)
+- Action: Read (normal)
+- User Role: Marketing (unusual for finance access)
+
+Transformer Attention Weights:
+1. Location (Moscow): 45% importance - CRITICAL
+2. User Role + Resource mismatch: 35% importance - HIGH
+3. Time (3 AM): 15% importance - MEDIUM
+4. Other features: 5% importance - LOW
+
+Result: "CRITICAL anomaly - primarily due to impossible location + role/resource mismatch"
+
+Why this matters: Security team knows exactly what to investigate
+```
+
+**Real ITDR Example - Feature Importance for Investigation:**
+```
+User flagged as anomaly - but why?
+
+Traditional ML: "User is anomalous (score: 0.87)" - not helpful
+Transformer: "User is anomalous because:
+  1. Accessing systems never used before (40% weight)
+  2. Location changed from US to Eastern Europe (35% weight)
+  3. Time of access outside normal hours (15% weight)
+  4. Volume of access 3x normal (10% weight)"
+
+ITDR Response: Focus investigation on credential compromise (location + new systems)
+```
+
+**Architecture:**
+Input features -> Embedding -> Multi-head Attention -> Dense layers -> Prediction + Attention weights
+
+**Why this enables ITDR:**
+Provides explainable AI for security teams. Instead of a black box saying "this is suspicious," Transformer shows exactly which features triggered the alert and why. This enables faster incident response, better false positive handling, and meets compliance requirements for explainable decisions. Critical for security operations where understanding WHY matters as much as detecting WHAT.
+
+## Deep Learning vs Traditional ML - When to Use Each?
+
+### Comparison Table
+
+| Factor | Isolation Forest | LSTM | Transformer |
+|--------|------------------|------|-------------|
+| **Best For** | Quick baseline | Attack sequences | Feature analysis |
+| **Data Type** | Single events | Time sequences | Single events |
+| **Training Time** | Fast (seconds) | Slow (minutes) | Medium (1-2 min) |
+| **Inference Speed** | Very Fast | Fast | Fast |
+| **Data Required** | Low (100s) | High (1000s+) | Medium (500s+) |
+| **Interpretability** | Medium | Low | High |
+| **Accuracy** | Good (85-90%) | Best (90-95%) | Best (88-93%) |
+| **False Positives** | Medium | Low | Low |
+| **Use Case** | General anomaly | Multi-step attacks | Context analysis |
+
+### Decision Guide
+
+**Use Isolation Forest when:**
+- You need results fast (proof of concept, demo)
+- You have limited training data (<500 samples)
+- You want good-enough accuracy quickly
+- You don't need to understand attack sequences
+- Your organization is new to ML/ITDR
+
+**Use LSTM when:**
+- You need to detect multi-step attack patterns
+- Order of events matters (reconnaissance -> breach -> exfiltration)
+- You have sequential access logs
+- You want to detect gradual privilege escalation
+- You're defending against APTs or insider threats
+
+**Use Transformer when:**
+- You need to explain WHY something is anomalous
+- Feature importance is critical for investigation
+- You want actionable security insights
+- Compliance requires explainable AI decisions
+- You're integrating with SOAR/automated response
+
+**Use All Three (Ensemble) when:**
+- You're deploying to production
+- You need maximum detection accuracy
+- You can afford the training time
+- You want defense in depth
+- False negatives are unacceptable (financial, healthcare, critical infrastructure)
+
+### Real-World Deployment Strategy
+
+**Phase 1: Quick Wins (Week 1)**
+- Deploy Isolation Forest
+- Establish baseline
+- Tune for acceptable false positive rate
+- Get security team comfortable with ML alerts
+
+**Phase 2: Deep Learning (Week 2-4)**
+- Train LSTM on historical attack data
+- Train Transformer for interpretability
+- Compare performance against Isolation Forest baseline
+- Fine-tune thresholds
+
+**Phase 3: Ensemble Production (Week 5+)**
+- Deploy all three models in parallel
+- Use voting mechanism (2/3 agreement = alert)
+- Route different alert types to different models:
+  - Isolation Forest: Real-time single-event screening
+  - LSTM: Batch sequence analysis every hour
+  - Transformer: Deep investigation of flagged events
+- Continuous retraining weekly
+
 ## Key Concepts (In Plain English)
 
 ### Training vs. Prediction
