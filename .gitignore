@@ -87,3 +87,6 @@ Thumbs.db
 *.tmp
 *.bak
 *.swp
+
+# Frontend exceptions
+!frontend/src/lib/

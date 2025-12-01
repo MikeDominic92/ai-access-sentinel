@@ -254,13 +254,33 @@ API will be available at `http://localhost:8000`
 
 Interactive docs: `http://localhost:8000/docs`
 
-### Launch Dashboard
+### Launch Dashboard (Streamlit)
 
 ```bash
 streamlit run dashboard/app.py
 ```
 
 Dashboard will open at `http://localhost:8501`
+
+### Launch Frontend (React/Next.js)
+
+A modern React frontend is also available:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend will open at `http://localhost:3000`
+
+**Frontend Screenshots:**
+
+| Anomaly Detection | Risk Scoring | Role Mining |
+|-------------------|--------------|-------------|
+| ![Anomalies](docs/screenshots/anomalies_page_1764611111831.png) | ![Risk](docs/screenshots/risk_page_1764611125945.png) | ![Roles](docs/screenshots/roles_page_1764611139665.png) |
+
+See [Frontend Walkthrough](docs/FRONTEND_WALKTHROUGH.md) for full documentation.
 
 ## API Documentation
 
