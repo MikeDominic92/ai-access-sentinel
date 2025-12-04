@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/screenshots/ai_access_sentinel_swagger_api_01.png" alt="AI Access Sentinel" width="800"/>
+  <img src="docs/images/dashboard-new.png" alt="AI Access Sentinel" width="800"/>
 </p>
 
 <h1 align="center">AI Access Sentinel</h1>
@@ -90,29 +90,19 @@ AI Access Sentinel combines **Machine Learning**, **UEBA (User Entity Behavior A
 <br/>Real-time threat identification
 </td>
 <td align="center" width="33%">
-<img src="docs/screenshots/risk_page_1764611125945.png" alt="Risk Scoring"/>
+<img src="docs/images/risk-new.png" alt="Risk Scoring"/>
 <br/><strong>Risk Scoring</strong>
 <br/>6-factor risk assessment
 </td>
 <td align="center" width="33%">
-<img src="docs/screenshots/roles_page_1764611139665.png" alt="Role Mining"/>
+<img src="docs/images/roles-new.png" alt="Role Mining"/>
 <br/><strong>Role Mining</strong>
 <br/>ML-discovered access patterns
 </td>
 </tr>
 </table>
 
-### API Documentation
 
-<table>
-<tr>
-<td align="center">
-<img src="docs/screenshots/ai_access_sentinel_swagger_api_01.png" alt="Swagger API"/>
-<br/><strong>Interactive API Documentation</strong>
-<br/>Full REST API with Falcon ITDR endpoints
-</td>
-</tr>
-</table>
 
 ---
 
