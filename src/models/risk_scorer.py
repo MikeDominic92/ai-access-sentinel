@@ -2,34 +2,73 @@
 Risk scoring engine for users and access events.
 
 Combines multiple factors to calculate comprehensive risk scores.
+
+v1.1 Enhancement - December 2025:
+- Added CrowdStrike Falcon threat intelligence integration
+- New factor: falcon_threat_score (25% weight when enabled)
+- Risk weights automatically adjust when Falcon data is available
+- Correlation with ITDR alerts for enhanced detection
 """
 
 import pandas as pd
 import numpy as np
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class RiskScorer:
     """
     Calculate risk scores for users based on multiple factors.
 
-    Factors:
-    - Anomaly count
-    - Peer deviation
-    - Sensitive resource access
-    - Failed attempts
-    - Policy violations
+    Base Factors (v1.0):
+    - Anomaly count (30%)
+    - Peer deviation (20%)
+    - Sensitive resource access (20%)
+    - Failed attempts (15%)
+    - Policy violations (15%)
+
+    Enhanced Factors (v1.1 with Falcon):
+    - Anomaly count (22.5%)
+    - Peer deviation (15%)
+    - Sensitive resource access (15%)
+    - Failed attempts (11.25%)
+    - Policy violations (11.25%)
+    - Falcon threat intelligence (25%)
     """
 
-    def __init__(self):
-        self.risk_weights = {
+    def __init__(self, enable_falcon: bool = True):
+        """
+        Initialize RiskScorer.
+
+        Args:
+            enable_falcon: Enable CrowdStrike Falcon integration (default: True)
+        """
+        self.enable_falcon = enable_falcon
+
+        # Base weights (without Falcon)
+        self._base_weights = {
             'anomaly_score': 0.30,
             'peer_deviation': 0.20,
             'sensitive_access': 0.20,
             'failed_attempts': 0.15,
             'policy_violations': 0.15
         }
+
+        # Enhanced weights (with Falcon - 25% allocated to Falcon)
+        self._falcon_weights = {
+            'anomaly_score': 0.225,      # 30% * 0.75
+            'peer_deviation': 0.15,       # 20% * 0.75
+            'sensitive_access': 0.15,     # 20% * 0.75
+            'failed_attempts': 0.1125,    # 15% * 0.75
+            'policy_violations': 0.1125,  # 15% * 0.75
+            'falcon_threat': 0.25         # New: 25%
+        }
+
+        # Use appropriate weights
+        self.risk_weights = self._falcon_weights if enable_falcon else self._base_weights
 
         self.risk_thresholds = {
             'critical': 90,
@@ -253,22 +292,124 @@ class RiskScorer:
 
         return score
 
+    def calculate_falcon_threat_factor(
+        self,
+        user_id: str,
+        falcon_alerts: Optional[List[Dict[str, Any]]] = None,
+        falcon_enrichment: Optional[Dict[str, Any]] = None
+    ) -> float:
+        """
+        Calculate Falcon threat intelligence factor (0-100).
+
+        v1.1 Enhancement - December 2025
+
+        This factor incorporates CrowdStrike Falcon ITDR data:
+        - Active identity protection alerts for the user
+        - Threat intelligence on source IPs
+        - Credential compromise indicators
+        - Lateral movement detections
+
+        Args:
+            user_id: User to score
+            falcon_alerts: List of Falcon alerts for this user
+            falcon_enrichment: Pre-computed enrichment data
+
+        Returns:
+            Falcon threat factor score (0-100)
+        """
+        if not self.enable_falcon:
+            return 0
+
+        score = 0
+
+        # If we have pre-computed enrichment, use it
+        if falcon_enrichment:
+            # Direct risk boost from enrichment
+            score = falcon_enrichment.get('falcon_risk_boost', 0) * 4  # Scale to 0-100
+
+            # Add for active alerts
+            if falcon_enrichment.get('has_falcon_alerts'):
+                active_alerts = falcon_enrichment.get('active_alerts', [])
+                for alert in active_alerts:
+                    severity = alert.get('severity', 'low')
+                    severity_score = {
+                        'critical': 40,
+                        'high': 30,
+                        'medium': 20,
+                        'low': 10
+                    }.get(severity, 5)
+                    score += severity_score
+
+            # Add for malicious indicators
+            for indicator in falcon_enrichment.get('threat_indicators', []):
+                confidence = indicator.get('confidence', 0.5)
+                score += 20 * confidence
+
+            return min(100, score)
+
+        # If we have raw Falcon alerts, process them
+        if falcon_alerts:
+            user_alerts = [
+                a for a in falcon_alerts
+                if a.get('user_id') == user_id or
+                   a.get('user_principal_name', '').lower() == user_id.lower()
+            ]
+
+            if not user_alerts:
+                return 0
+
+            # Score based on alert severity and confidence
+            for alert in user_alerts:
+                severity = alert.get('severity', 'medium').lower()
+                confidence = alert.get('confidence', 0.5)
+
+                severity_base = {
+                    'critical': 50,
+                    'high': 35,
+                    'medium': 20,
+                    'low': 10,
+                    'informational': 5
+                }.get(severity, 15)
+
+                # Weight by confidence
+                alert_score = severity_base * confidence
+
+                # Boost for specific high-risk alert types
+                alert_type = alert.get('alert_type', '').lower()
+                if alert_type in ['credential_theft', 'golden_ticket', 'dcsync']:
+                    alert_score *= 1.3
+                elif alert_type in ['lateral_movement', 'privilege_escalation']:
+                    alert_score *= 1.2
+
+                score += alert_score
+
+            return min(100, score)
+
+        return 0
+
     def calculate_user_risk_score(
         self,
         df: pd.DataFrame,
         user_id: str,
-        department: str = None
-    ) -> Dict[str, any]:
+        department: str = None,
+        falcon_alerts: Optional[List[Dict[str, Any]]] = None,
+        falcon_enrichment: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """
         Calculate comprehensive risk score for a user.
+
+        v1.1 Enhancement: Now integrates CrowdStrike Falcon ITDR data
+        for enhanced threat detection and correlation.
 
         Args:
             df: IAM logs DataFrame
             user_id: User to score
             department: User's department (if known)
+            falcon_alerts: CrowdStrike Falcon alerts for this user (v1.1)
+            falcon_enrichment: Pre-computed Falcon enrichment data (v1.1)
 
         Returns:
-            Dictionary with risk score and breakdown
+            Dictionary with risk score, breakdown, and Falcon correlation
         """
         # Get department if not provided
         if department is None and 'department' in df.columns:
@@ -278,7 +419,7 @@ class RiskScorer:
             else:
                 department = 'Unknown'
 
-        # Calculate individual factors
+        # Calculate base factors
         factors = {
             'anomaly_score': self.calculate_anomaly_factor(df, user_id),
             'peer_deviation': self.calculate_peer_deviation_factor(df, user_id, department) if department != 'Unknown' else 0,
@@ -287,10 +428,38 @@ class RiskScorer:
             'policy_violations': self.calculate_policy_violations_factor(df, user_id)
         }
 
-        # Calculate weighted score
+        # v1.1: Add Falcon threat factor if enabled
+        falcon_score = 0
+        falcon_context = {}
+        if self.enable_falcon:
+            falcon_score = self.calculate_falcon_threat_factor(
+                user_id, falcon_alerts, falcon_enrichment
+            )
+            factors['falcon_threat'] = falcon_score
+
+            # Capture Falcon context for response
+            if falcon_alerts:
+                user_alerts = [
+                    a for a in falcon_alerts
+                    if a.get('user_id') == user_id or
+                       a.get('user_principal_name', '').lower() == user_id.lower()
+                ]
+                falcon_context = {
+                    'active_alerts': len(user_alerts),
+                    'alert_types': list(set(a.get('alert_type', 'unknown') for a in user_alerts)),
+                    'max_severity': max(
+                        (a.get('severity', 'low') for a in user_alerts),
+                        key=lambda s: {'critical': 4, 'high': 3, 'medium': 2, 'low': 1}.get(s, 0),
+                        default='none'
+                    ) if user_alerts else 'none'
+                }
+
+            logger.debug(f"Falcon threat factor for {user_id}: {falcon_score}")
+
+        # Calculate weighted score using appropriate weights
         total_score = sum(
-            factors[key] * self.risk_weights[key]
-            for key in self.risk_weights.keys()
+            factors[key] * self.risk_weights.get(key, 0)
+            for key in factors.keys()
         )
 
         # Determine risk level
@@ -305,39 +474,65 @@ class RiskScorer:
         else:
             risk_level = 'MINIMAL'
 
-        # Generate recommendations
+        # Generate recommendations (includes Falcon-aware recommendations)
         recommendations = self._generate_recommendations(factors, risk_level)
 
-        return {
+        result = {
             'user_id': user_id,
             'risk_score': round(total_score, 2),
             'risk_level': risk_level,
             'factor_scores': {k: round(v, 2) for k, v in factors.items()},
-            'recommendations': recommendations
+            'recommendations': recommendations,
+            'falcon_enabled': self.enable_falcon
         }
+
+        # Add Falcon context if available
+        if falcon_context:
+            result['falcon_context'] = falcon_context
+
+        return result
 
     def _generate_recommendations(
         self,
         factors: Dict[str, float],
         risk_level: str
     ) -> List[str]:
-        """Generate recommendations based on risk factors."""
+        """
+        Generate recommendations based on risk factors.
+
+        v1.1: Now includes Falcon-aware recommendations for
+        identity threat response.
+        """
         recommendations = []
 
-        if factors['anomaly_score'] > 50:
+        if factors.get('anomaly_score', 0) > 50:
             recommendations.append("High anomaly count - increase monitoring")
 
-        if factors['peer_deviation'] > 60:
+        if factors.get('peer_deviation', 0) > 60:
             recommendations.append("Unusual access pattern vs peers - review permissions")
 
-        if factors['sensitive_access'] > 70:
+        if factors.get('sensitive_access', 0) > 70:
             recommendations.append("Frequent sensitive resource access - enforce MFA")
 
-        if factors['failed_attempts'] > 40:
+        if factors.get('failed_attempts', 0) > 40:
             recommendations.append("Multiple failed attempts - investigate credentials")
 
-        if factors['policy_violations'] > 50:
+        if factors.get('policy_violations', 0) > 50:
             recommendations.append("Policy violations detected - conduct security training")
+
+        # v1.1: Falcon-aware recommendations
+        falcon_score = factors.get('falcon_threat', 0)
+        if falcon_score > 80:
+            recommendations.append("CRITICAL: Active Falcon ITDR alert - initiate incident response")
+            recommendations.append("Recommend temporary access suspension pending investigation")
+        elif falcon_score > 60:
+            recommendations.append("HIGH: Falcon threat intelligence indicates compromise risk")
+            recommendations.append("Review CrowdStrike Falcon console for detailed indicators")
+        elif falcon_score > 40:
+            recommendations.append("MEDIUM: Falcon detected suspicious identity activity")
+            recommendations.append("Correlate with IAM logs for full context")
+        elif falcon_score > 20:
+            recommendations.append("LOW: Minor Falcon indicators - continue enhanced monitoring")
 
         if risk_level in ['CRITICAL', 'HIGH']:
             recommendations.append("Require immediate security review")
@@ -349,30 +544,52 @@ class RiskScorer:
 
     def calculate_batch_risk_scores(
         self,
-        df: pd.DataFrame
+        df: pd.DataFrame,
+        falcon_alerts: Optional[List[Dict[str, Any]]] = None
     ) -> pd.DataFrame:
         """
         Calculate risk scores for all users.
 
+        v1.1: Now supports Falcon alert correlation across all users.
+
         Args:
             df: IAM logs DataFrame
+            falcon_alerts: CrowdStrike Falcon alerts for correlation (v1.1)
 
         Returns:
             DataFrame with user risk scores
         """
         print("Calculating risk scores for all users...")
+        if self.enable_falcon and falcon_alerts:
+            print(f"  - Correlating with {len(falcon_alerts)} Falcon alerts")
 
         results = []
         users = df['user_id'].unique()
 
         for user_id in users:
-            score_result = self.calculate_user_risk_score(df, user_id)
+            score_result = self.calculate_user_risk_score(
+                df, user_id,
+                falcon_alerts=falcon_alerts
+            )
             results.append(score_result)
 
         scores_df = pd.DataFrame(results)
         scores_df = scores_df.sort_values('risk_score', ascending=False)
 
         print(f"Calculated scores for {len(users)} users")
+
+        # Log high-risk users with Falcon correlation
+        if self.enable_falcon:
+            falcon_elevated = scores_df[
+                scores_df['factor_scores'].apply(
+                    lambda x: x.get('falcon_threat', 0) > 50
+                )
+            ] if 'factor_scores' in scores_df.columns else pd.DataFrame()
+
+            if len(falcon_elevated) > 0:
+                logger.warning(
+                    f"Found {len(falcon_elevated)} users with elevated Falcon threat scores"
+                )
 
         return scores_df
 

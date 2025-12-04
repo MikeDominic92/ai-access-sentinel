@@ -3,9 +3,24 @@
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-orange.svg)
+![CrowdStrike](https://img.shields.io/badge/CrowdStrike-Falcon_ITDR-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-> Machine Learning-powered ITDR platform with UEBA, anomaly detection, and predictive identity governance for modern zero-trust environments
+> Machine Learning-powered ITDR platform with UEBA, anomaly detection, predictive identity governance, and CrowdStrike Falcon integration for modern zero-trust environments
+
+## v1.1 Release - December 2025
+
+**New in v1.1: CrowdStrike Falcon ITDR Integration**
+
+This release adds enterprise-grade threat intelligence through CrowdStrike Falcon Identity Threat Detection:
+
+- **Real-time Falcon Webhook Processing**: Receive and correlate Falcon identity alerts
+- **Enhanced Risk Scoring**: 6-factor model with Falcon threat intelligence (25% weight)
+- **Alert Correlation Engine**: Combine ML anomalies with Falcon detections
+- **MITRE ATT&CK Mapping**: Automatic technique/tactic classification
+- **Identity Attack Detection**: Credential theft, lateral movement, privilege escalation
+
+See [CHANGELOG.md](CHANGELOG.md) for full details.
 
 ## Overview
 
@@ -27,44 +42,49 @@ Traditional IAM systems are reactive - they enforce policies but don't predict i
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Data Sources                             │
-│  (Synthetic IAM Logs: Users, Resources, Access Events)      │
-└────────────────┬────────────────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Data Processing Pipeline                        │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   Ingestion  │→ │Preprocessing │→ │   Feature    │      │
-│  │              │  │              │  │ Engineering  │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└────────────────┬────────────────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   ML Model Suite                             │
-│  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐  │
-│  │   Anomaly      │  │    Access      │  │     Role     │  │
-│  │   Detection    │  │  Prediction    │  │    Mining    │  │
-│  │ (Iso. Forest)  │  │(Random Forest) │  │  (K-Means)   │  │
-│  └────────────────┘  └────────────────┘  └──────────────┘  │
-│  ┌────────────────┐                                         │
-│  │   Risk Scorer  │                                         │
-│  │   (Ensemble)   │                                         │
-│  └────────────────┘                                         │
-└────────────────┬────────────────────────────────────────────┘
-                 │
-        ┌────────┴────────┐
-        ▼                 ▼
-┌──────────────┐  ┌──────────────┐
-│   FastAPI    │  │  Streamlit   │
-│     API      │  │  Dashboard   │
-│              │  │              │
-│  - Analyze   │  │ - Real-time  │
-│  - Predict   │  │   Monitoring │
-│  - Score     │  │ - Viz        │
-└──────────────┘  └──────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Data Sources                                   │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
+│  │  IAM Logs        │  │  Identity Events │  │ CrowdStrike      │  │
+│  │  (Users, Access) │  │  (Auth, MFA)     │  │ Falcon ITDR      │  │
+│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  │
+└───────────┼─────────────────────┼─────────────────────┼─────────────┘
+            │                     │                     │
+            └─────────────────────┼─────────────────────┘
+                                  ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Data Processing Pipeline                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────────┐  │
+│  │   Ingestion  │→ │Preprocessing │→ │  Feature Engineering     │  │
+│  │              │  │              │  │  + Falcon Event Parsing  │  │
+│  └──────────────┘  └──────────────┘  └──────────────────────────┘  │
+└─────────────────────────────┬───────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      ML + Threat Intel Suite                         │
+│  ┌────────────────┐  ┌────────────────┐  ┌────────────────────┐    │
+│  │   Anomaly      │  │    Access      │  │ Alert Correlator   │    │
+│  │   Detection    │  │  Prediction    │  │ (Falcon + ML)      │    │
+│  │ (Iso. Forest)  │  │(Random Forest) │  │                    │    │
+│  └────────────────┘  └────────────────┘  └────────────────────┘    │
+│  ┌────────────────┐  ┌────────────────┐  ┌────────────────────┐    │
+│  │  Role Mining   │  │  Risk Scorer   │  │  Falcon Connector  │    │
+│  │  (K-Means)     │  │  (6-Factor)    │  │  (ITDR API)        │    │
+│  └────────────────┘  └────────────────┘  └────────────────────┘    │
+└─────────────────────────────┬───────────────────────────────────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+┌──────────────────┐  ┌──────────────┐  ┌──────────────────┐
+│    FastAPI       │  │  Streamlit   │  │  Falcon Webhook  │
+│    REST API      │  │  Dashboard   │  │  Endpoint        │
+│                  │  │              │  │                  │
+│  - Analyze       │  │ - Real-time  │  │ - /falcon/webhook│
+│  - Predict       │  │   Monitoring │  │ - /falcon/alerts │
+│  - Risk Score    │  │ - Viz        │  │ - /falcon/sync   │
+│  - Falcon Enrich │  │              │  │                  │
+└──────────────────┘  └──────────────┘  └──────────────────┘
 ```
 
 ## ML Models Explained (Non-Technical)
@@ -191,12 +211,6 @@ User and Entity Behavior Analytics (UEBA) powers the ITDR capabilities:
 - **Graph-based access analysis**: Understand relationships between users, resources, and access patterns
 - **Sequence analysis**: Detect multi-step attack patterns (reconnaissance, access, exfiltration)
 - **Clustering and segmentation**: Automatically discover user groups and role patterns
-- **Predictive modeling**: Forecast future access needs and potential risks
-
-## Getting Started
-
-### Prerequisites
-
 - Python 3.9+
 - pip package manager
 - Git
@@ -372,6 +386,116 @@ Response:
     "precision": 0.90,
     "recall": 0.88
   }
+}
+```
+
+### v1.1: CrowdStrike Falcon ITDR Endpoints
+
+#### Receive Falcon Webhook
+
+```bash
+POST /api/v1/falcon/webhook
+Content-Type: application/json
+
+[
+  {
+    "alertId": "falcon-alert-12345",
+    "type": "CredentialTheft",
+    "timestamp": "2025-12-04T10:30:00Z",
+    "user": {
+      "id": "U001",
+      "name": "john.doe",
+      "userPrincipalName": "john.doe@company.com"
+    },
+    "sourceIp": "192.168.1.100",
+    "severity": "high",
+    "confidence": 0.85,
+    "tactics": ["TA0006"],
+    "techniques": ["T1110"]
+  }
+]
+
+Response:
+{
+  "status": "processed",
+  "events_processed": 1,
+  "correlations_found": 1,
+  "alerts_generated": 1,
+  "correlated_alerts": [
+    {
+      "correlation_id": "corr-abc123",
+      "correlation_confidence": "HIGH",
+      "correlation_score": 85.5,
+      "falcon_alert_type": "credential_theft",
+      "ml_anomaly_detected": true,
+      "combined_risk_level": "CRITICAL",
+      "recommendations": [
+        "CRITICAL: Active Falcon ITDR alert - initiate incident response",
+        "Recommend temporary access suspension pending investigation"
+      ]
+    }
+  ],
+  "processing_time_ms": 45.2
+}
+```
+
+#### Get Falcon-Enriched Risk Score
+
+```bash
+GET /api/v1/falcon/user/U001/risk
+
+Response:
+{
+  "user_id": "U001",
+  "risk_score": 78.5,
+  "risk_level": "HIGH",
+  "factor_scores": {
+    "anomaly_score": 65.0,
+    "peer_deviation": 45.0,
+    "sensitive_access": 72.0,
+    "failed_attempts": 30.0,
+    "policy_violations": 55.0,
+    "falcon_threat": 85.0
+  },
+  "falcon_enabled": true,
+  "falcon_context": {
+    "active_alerts": 2,
+    "alert_types": ["credential_theft", "lateral_movement"],
+    "max_severity": "high"
+  },
+  "recommendations": [
+    "HIGH: Falcon threat intelligence indicates compromise risk",
+    "Review CrowdStrike Falcon console for detailed indicators",
+    "Require immediate security review"
+  ]
+}
+```
+
+#### Get Falcon Connection Status
+
+```bash
+GET /api/v1/falcon/status
+
+Response:
+{
+  "connected": true,
+  "api_version": "1.1.0",
+  "last_sync": "2025-12-04T14:30:00Z",
+  "alerts_fetched": 47
+}
+```
+
+#### Sync Falcon Alerts
+
+```bash
+POST /api/v1/falcon/sync
+
+Response:
+{
+  "status": "synced",
+  "alerts_fetched": 25,
+  "total_cached": 72,
+  "last_sync": "2025-12-04T14:35:00Z"
 }
 ```
 
