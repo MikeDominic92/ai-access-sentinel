@@ -63,7 +63,7 @@ Modern SOC teams require:
 ## The Solution: AI Access Sentinel
 
 <p align="center">
-  <img src="docs/screenshots/anomalies_page_1764611111831.png" alt="Anomaly Detection Dashboard" width="800"/>
+  <img src="docs/images/dashboard-new.png" alt="Anomaly Detection Dashboard" width="800"/>
 </p>
 
 AI Access Sentinel combines **Machine Learning**, **UEBA (User Entity Behavior Analytics)**, and **CrowdStrike Falcon ITDR** to provide:
@@ -85,7 +85,7 @@ AI Access Sentinel combines **Machine Learning**, **UEBA (User Entity Behavior A
 <table>
 <tr>
 <td align="center" width="33%">
-<img src="docs/screenshots/anomalies_page_1764611111831.png" alt="Anomaly Detection"/>
+<img src="docs/images/dashboard-new.png" alt="Anomaly Detection"/>
 <br/><strong>Anomaly Detection</strong>
 <br/>Real-time threat identification
 </td>

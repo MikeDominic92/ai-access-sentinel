@@ -12,8 +12,8 @@ import {
     BrainCircuit,
     Settings,
     ChevronLeft,
-    ChevronRight,
-    Menu
+    Menu,
+    LogOut
 } from 'lucide-react';
 
 const navItems = [
@@ -22,7 +22,6 @@ const navItems = [
     { name: 'Risk Scoring', href: '/risk', icon: ShieldAlert },
     { name: 'Role Mining', href: '/roles', icon: Users },
     { name: 'Predictions', href: '/predictions', icon: BrainCircuit },
-    { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
 export function Sidebar() {
@@ -32,20 +31,20 @@ export function Sidebar() {
     return (
         <aside
             className={cn(
-                "h-screen fixed left-0 top-0 z-40 bg-deep-navy border-r border-white/10 transition-all duration-300 ease-in-out flex flex-col",
+                "h-[calc(100vh-2rem)] fixed left-4 top-4 z-40 glass-panel border-r-0 transition-all duration-300 ease-in-out flex flex-col rounded-2xl",
                 collapsed ? "w-20" : "w-64"
             )}
         >
             {/* Logo Area */}
-            <div className="h-16 flex items-center justify-between px-4 border-b border-white/10">
+            <div className="h-20 flex items-center justify-between px-4 border-b border-white/10">
                 {!collapsed && (
-                    <span className="font-bold text-xl tracking-wider text-electric-cyan">
+                    <span className="font-orbitron font-bold text-lg tracking-wider text-white neon-text-cyan">
                         SENTINEL
                     </span>
                 )}
                 <button
                     onClick={() => setCollapsed(!collapsed)}
-                    className="p-2 rounded-lg hover:bg-white/5 text-silver transition-colors"
+                    className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors ml-auto"
                 >
                     {collapsed ? <Menu size={20} /> : <ChevronLeft size={20} />}
                 </button>
@@ -62,17 +61,17 @@ export function Sidebar() {
                             key={item.href}
                             href={item.href}
                             className={cn(
-                                "flex items-center px-3 py-3 rounded-lg transition-all duration-200 group",
+                                "flex items-center px-3 py-3 rounded-xl transition-all duration-300 group",
                                 isActive
-                                    ? "bg-electric-cyan/10 text-electric-cyan"
-                                    : "text-silver hover:bg-white/5 hover:text-white"
+                                    ? "bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]"
+                                    : "text-gray-400 hover:bg-white/5 hover:text-white hover:pl-4"
                             )}
                         >
                             <Icon
                                 size={20}
                                 className={cn(
                                     "transition-colors",
-                                    isActive ? "text-electric-cyan" : "text-silver group-hover:text-white"
+                                    isActive ? "text-cyber-cyan" : "text-gray-500 group-hover:text-white"
                                 )}
                             />
                             {!collapsed && (
@@ -80,30 +79,26 @@ export function Sidebar() {
                                     {item.name}
                                 </span>
                             )}
-
-                            {/* Active Indicator */}
-                            {isActive && !collapsed && (
-                                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-electric-cyan shadow-[0_0_8px_#00D9FF]" />
-                            )}
                         </Link>
                     );
                 })}
             </nav>
 
-            {/* User Profile / Footer */}
-            <div className="p-4 border-t border-white/10">
-                <div className={cn("flex items-center", collapsed ? "justify-center" : "space-x-3")}>
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-electric-cyan to-deep-navy border border-white/20 flex items-center justify-center text-xs font-bold text-white">
-                        JD
-                    </div>
-                    {!collapsed && (
-                        <div className="flex flex-col">
-                            <span className="text-sm font-medium text-white">Jane Doe</span>
-                            <span className="text-xs text-silver">SOC Analyst</span>
-                        </div>
-                    )}
-                </div>
+            {/* Footer */}
+            <div className="p-4 border-t border-white/10 space-y-2">
+                <Link
+                    href="/settings"
+                    className="flex items-center px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+                >
+                    <Settings size={20} />
+                    {!collapsed && <span className="ml-3 text-sm font-medium">Settings</span>}
+                </Link>
+                <button className="flex items-center w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors">
+                    <LogOut size={20} />
+                    {!collapsed && <span className="ml-3 text-sm font-medium">Sign Out</span>}
+                </button>
             </div>
         </aside>
     );
 }
+
