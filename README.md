@@ -1,450 +1,262 @@
-# AI Access Sentinel - Identity Threat Detection and Response (ITDR) Platform
+<p align="center">
+  <img src="docs/screenshots/ai_access_sentinel_swagger_api_01.png" alt="AI Access Sentinel" width="800"/>
+</p>
 
-![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-orange.svg)
-![CrowdStrike](https://img.shields.io/badge/CrowdStrike-Falcon_ITDR-red.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+<h1 align="center">AI Access Sentinel</h1>
+<h3 align="center">Identity Threat Detection and Response (ITDR) Platform</h3>
 
-> Machine Learning-powered ITDR platform with UEBA, anomaly detection, predictive identity governance, and CrowdStrike Falcon integration for modern zero-trust environments
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="Python"/>
+  <img src="https://img.shields.io/badge/FastAPI-0.104+-green.svg" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/scikit--learn-1.3+-orange.svg" alt="scikit-learn"/>
+  <img src="https://img.shields.io/badge/CrowdStrike-Falcon_ITDR-red.svg" alt="CrowdStrike"/>
+  <img src="https://img.shields.io/badge/version-1.1.0-purple.svg" alt="Version"/>
+  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/>
+</p>
 
-## v1.1 Release - December 2025
+<p align="center">
+  <strong>ML-powered ITDR platform combining UEBA, anomaly detection, and CrowdStrike Falcon threat intelligence for Zero Trust environments</strong>
+</p>
 
-**New in v1.1: CrowdStrike Falcon ITDR Integration**
+---
 
-This release adds enterprise-grade threat intelligence through CrowdStrike Falcon Identity Threat Detection:
+## The Problem
 
-- **Real-time Falcon Webhook Processing**: Receive and correlate Falcon identity alerts
-- **Enhanced Risk Scoring**: 6-factor model with Falcon threat intelligence (25% weight)
-- **Alert Correlation Engine**: Combine ML anomalies with Falcon detections
-- **MITRE ATT&CK Mapping**: Automatic technique/tactic classification
-- **Identity Attack Detection**: Credential theft, lateral movement, privilege escalation
+<table>
+<tr>
+<td width="50%">
 
-See [CHANGELOG.md](CHANGELOG.md) for full details.
+### Identity-Based Attacks Are #1 Threat Vector
 
-## Overview
+According to industry research:
+- **80%** of breaches involve compromised credentials (Verizon DBIR 2024)
+- **99%** of organizations experienced identity-based attacks (CrowdStrike 2024)
+- **$4.5M** average cost of a data breach (IBM 2024)
 
-AI Access Sentinel is an advanced Identity Threat Detection and Response (ITDR) platform that leverages machine learning and User and Entity Behavior Analytics (UEBA) to detect identity-based threats, predict access risks, and discover hidden role structures. It combines traditional IAM principles with modern ML techniques to provide intelligent, proactive security monitoring and real-time identity threat detection.
+Traditional IAM systems are **reactive** - they enforce policies but cannot:
+- Detect credential compromise in real-time
+- Identify lateral movement patterns
+- Predict privilege escalation attempts
+- Correlate identity threats across systems
 
-**What is ITDR?**
-Identity Threat Detection and Response (ITDR) is a cybersecurity category focused on defending against identity-based attacks - the leading attack vector in modern breaches. ITDR solutions monitor identity systems, detect credential compromise, privilege escalation, and lateral movement, then respond with automated remediation.
+</td>
+<td width="50%">
 
-## Motivation
+### What Security Teams Need
 
-Traditional IAM systems are reactive - they enforce policies but don't predict identity-based threats. As organizations grow, the identity attack surface expands and manual review becomes impossible. This ITDR platform demonstrates:
+Modern SOC teams require:
+- **Real-time threat detection** for identity attacks
+- **Behavioral analytics** to establish baselines
+- **ML-powered anomaly detection** at scale
+- **Threat intelligence integration** (CrowdStrike, etc.)
+- **Automated response** capabilities
+- **Risk-based access decisions**
 
-- **AI/ML convergence with IAM**: Using data science and UEBA to enhance identity security
-- **Proactive threat detection**: Identifying credential compromise and anomalies before they become breaches
-- **Intelligent role management**: Discovering actual vs. assigned roles through clustering
-- **Risk-based access control**: Dynamic risk scoring for adaptive security and identity-based zero trust
-- **Identity threat response**: Automated detection and response to lateral movement and privilege escalation
+**This is ITDR - Identity Threat Detection and Response.**
+
+</td>
+</tr>
+</table>
+
+---
+
+## The Solution: AI Access Sentinel
+
+<p align="center">
+  <img src="docs/screenshots/anomalies_page_1764611111831.png" alt="Anomaly Detection Dashboard" width="800"/>
+</p>
+
+AI Access Sentinel combines **Machine Learning**, **UEBA (User Entity Behavior Analytics)**, and **CrowdStrike Falcon ITDR** to provide:
+
+| Capability | Technology | Outcome |
+|------------|------------|---------|
+| **Anomaly Detection** | Isolation Forest, LSTM, Transformer | Detect unusual access patterns in real-time |
+| **Risk Scoring** | 6-Factor ML Model | Quantify user risk from 0-100 |
+| **Threat Intelligence** | CrowdStrike Falcon ITDR | Correlate with global threat data |
+| **Role Mining** | K-Means Clustering | Discover actual vs assigned permissions |
+| **Access Prediction** | Random Forest | Recommend approve/deny decisions |
+
+---
+
+## Screenshots
+
+### Dashboard Views
+
+<table>
+<tr>
+<td align="center" width="33%">
+<img src="docs/screenshots/anomalies_page_1764611111831.png" alt="Anomaly Detection"/>
+<br/><strong>Anomaly Detection</strong>
+<br/>Real-time threat identification
+</td>
+<td align="center" width="33%">
+<img src="docs/screenshots/risk_page_1764611125945.png" alt="Risk Scoring"/>
+<br/><strong>Risk Scoring</strong>
+<br/>6-factor risk assessment
+</td>
+<td align="center" width="33%">
+<img src="docs/screenshots/roles_page_1764611139665.png" alt="Role Mining"/>
+<br/><strong>Role Mining</strong>
+<br/>ML-discovered access patterns
+</td>
+</tr>
+</table>
+
+### API Documentation
+
+<table>
+<tr>
+<td align="center">
+<img src="docs/screenshots/ai_access_sentinel_swagger_api_01.png" alt="Swagger API"/>
+<br/><strong>Interactive API Documentation</strong>
+<br/>Full REST API with Falcon ITDR endpoints
+</td>
+</tr>
+</table>
+
+---
+
+## Why CrowdStrike Falcon ITDR? (v1.1)
+
+<table>
+<tr>
+<td width="60%">
+
+### The Integration Rationale
+
+CrowdStrike Falcon ITDR was chosen for v1.1 because:
+
+1. **Industry Leader** - Gartner Magic Quadrant leader in endpoint/identity protection
+2. **Real-time Threat Intel** - Global visibility into identity attacks
+3. **MITRE ATT&CK Mapping** - Native technique/tactic classification
+4. **FalconPy SDK** - Official Python SDK for seamless integration
+5. **Enterprise Adoption** - Used by Fortune 500 companies globally
+
+### Skills Demonstrated
+
+- API integration with enterprise security tools
+- Webhook processing and event correlation
+- OAuth2 authentication flows
+- Real-time threat intelligence processing
+
+</td>
+<td width="40%">
+
+### Before vs After
+
+| Metric | v1.0 | v1.1 |
+|--------|------|------|
+| Risk Factors | 5 | **6** (+Falcon) |
+| Threat Sources | ML only | ML + **Falcon** |
+| Attack Types | Anomalies | + **13 ITDR types** |
+| Response Time | Minutes | **Seconds** |
+
+### Supported Attack Types
+
+- Credential Theft (T1003)
+- Lateral Movement (T1021)
+- Privilege Escalation (T1078)
+- Brute Force (T1110)
+- Golden/Silver Ticket
+- Kerberoasting
+- DCSync
+
+</td>
+</tr>
+</table>
+
+---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        Data Sources                                   │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
-│  │  IAM Logs        │  │  Identity Events │  │ CrowdStrike      │  │
-│  │  (Users, Access) │  │  (Auth, MFA)     │  │ Falcon ITDR      │  │
-│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  │
-└───────────┼─────────────────────┼─────────────────────┼─────────────┘
-            │                     │                     │
-            └─────────────────────┼─────────────────────┘
+                                    DATA SOURCES
+    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+    │   IAM Logs      │    │  Auth Events    │    │  CrowdStrike    │
+    │  (10K+ events)  │    │  (MFA, SSO)     │    │  Falcon ITDR    │
+    └────────┬────────┘    └────────┬────────┘    └────────┬────────┘
+             │                      │                      │
+             └──────────────────────┼──────────────────────┘
+                                    │
+                                    ▼
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    PROCESSING PIPELINE                          │
+    │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
+    │  │  Ingestion  │─▶│ Preprocess  │─▶│  Feature Engineering    │ │
+    │  │             │  │             │  │  + Falcon Event Parser  │ │
+    │  └─────────────┘  └─────────────┘  └─────────────────────────┘ │
+    └─────────────────────────────┬───────────────────────────────────┘
+                                  │
                                   ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    Data Processing Pipeline                          │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────────┐  │
-│  │   Ingestion  │→ │Preprocessing │→ │  Feature Engineering     │  │
-│  │              │  │              │  │  + Falcon Event Parsing  │  │
-│  └──────────────┘  └──────────────┘  └──────────────────────────┘  │
-└─────────────────────────────┬───────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                      ML + Threat Intel Suite                         │
-│  ┌────────────────┐  ┌────────────────┐  ┌────────────────────┐    │
-│  │   Anomaly      │  │    Access      │  │ Alert Correlator   │    │
-│  │   Detection    │  │  Prediction    │  │ (Falcon + ML)      │    │
-│  │ (Iso. Forest)  │  │(Random Forest) │  │                    │    │
-│  └────────────────┘  └────────────────┘  └────────────────────┘    │
-│  ┌────────────────┐  ┌────────────────┐  ┌────────────────────┐    │
-│  │  Role Mining   │  │  Risk Scorer   │  │  Falcon Connector  │    │
-│  │  (K-Means)     │  │  (6-Factor)    │  │  (ITDR API)        │    │
-│  └────────────────┘  └────────────────┘  └────────────────────┘    │
-└─────────────────────────────┬───────────────────────────────────────┘
-                              │
-              ┌───────────────┼───────────────┐
-              ▼               ▼               ▼
-┌──────────────────┐  ┌──────────────┐  ┌──────────────────┐
-│    FastAPI       │  │  Streamlit   │  │  Falcon Webhook  │
-│    REST API      │  │  Dashboard   │  │  Endpoint        │
-│                  │  │              │  │                  │
-│  - Analyze       │  │ - Real-time  │  │ - /falcon/webhook│
-│  - Predict       │  │   Monitoring │  │ - /falcon/alerts │
-│  - Risk Score    │  │ - Viz        │  │ - /falcon/sync   │
-│  - Falcon Enrich │  │              │  │                  │
-└──────────────────┘  └──────────────┘  └──────────────────┘
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    ML + THREAT INTEL SUITE                      │
+    │                                                                 │
+    │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐  │
+    │  │   Anomaly    │  │   Access     │  │  Alert Correlator    │  │
+    │  │  Detection   │  │  Prediction  │  │  (Falcon + ML)       │  │
+    │  │ ────────────│  │ ────────────│  │ ────────────────────│  │
+    │  │ Iso. Forest  │  │ Rand. Forest │  │ Confidence Scoring   │  │
+    │  │ LSTM         │  │ 92% Accuracy │  │ MITRE Mapping        │  │
+    │  │ Transformer  │  │              │  │                      │  │
+    │  └──────────────┘  └──────────────┘  └──────────────────────┘  │
+    │                                                                 │
+    │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐  │
+    │  │ Role Mining  │  │ Risk Scorer  │  │  Falcon Connector    │  │
+    │  │ ────────────│  │ ────────────│  │ ────────────────────│  │
+    │  │ K-Means      │  │ 6-Factor     │  │ FalconPy SDK         │  │
+    │  │ Hierarchical │  │ 0-100 Scale  │  │ OAuth2 + Webhooks    │  │
+    │  └──────────────┘  └──────────────┘  └──────────────────────┘  │
+    └─────────────────────────────┬───────────────────────────────────┘
+                                  │
+            ┌─────────────────────┼─────────────────────┐
+            ▼                     ▼                     ▼
+    ┌──────────────┐      ┌──────────────┐      ┌──────────────┐
+    │   FastAPI    │      │  Streamlit   │      │   React      │
+    │   REST API   │      │  Dashboard   │      │   Frontend   │
+    │              │      │              │      │              │
+    │ 15+ Endpoints│      │ Real-time    │      │ Modern UI    │
+    │ Falcon ITDR  │      │ Monitoring   │      │ Dark Theme   │
+    └──────────────┘      └──────────────┘      └──────────────┘
 ```
 
-## ML Models Explained (Non-Technical)
+---
 
-### 1. Anomaly Detection
-**What it does**: Finds unusual access patterns that might indicate security threats.
+## 6-Factor Risk Scoring Model
 
-**How it works**: Like a guard who learns normal behavior - if someone usually logs in from New York during business hours, but suddenly logs in from Russia at 3 AM, that's flagged as suspicious.
+<table>
+<tr>
+<td width="50%">
 
-**Algorithms Used**:
-- **Isolation Forest**: Identifies outliers by randomly splitting data (like finding a red apple in a basket of green ones)
-- **One-Class SVM**: Learns what "normal" looks like and flags anything different
-- **Local Outlier Factor**: Compares each event to its neighbors to find odd ones out
-- **LSTM (Deep Learning)**: Analyzes sequences of access events to detect multi-step attack patterns
-- **Transformer (Deep Learning)**: Uses attention mechanism to identify which features matter most
+### How It Works
 
-### 2. Access Prediction
-**What it does**: Recommends whether an access request should be approved.
+The risk scorer combines 6 weighted factors:
 
-**How it works**: Looks at similar users (same department, role, seniority) and checks if they have that access. If 90% of similar users have it, recommendation is "approve."
-
-**Algorithm**: Random Forest (combines multiple decision trees for accurate predictions)
-
-### 3. Role Mining
-**What it does**: Discovers hidden role patterns by clustering users with similar access.
-
-**How it works**: Groups users who access the same resources, revealing actual working roles vs. assigned titles. Helps identify role creep and over-privileged accounts.
-
-**Algorithm**: K-Means Clustering (groups similar users together automatically)
-
-### 4. Risk Scoring
-**What it does**: Assigns each user a risk score (0-100) based on behavior.
-
-**How it works**: Combines multiple factors:
-- Number of anomalies detected
-- Deviation from peer behavior
-- Sensitive resource access
-- Policy violations
-
-### 5. Deep Learning Models (Advanced)
-**What they do**: Detect complex patterns that traditional ML might miss.
-
-**LSTM (Long Short-Term Memory)**:
-- Analyzes sequences of access events over time
-- Detects multi-step attack patterns (reconnaissance -> access -> exfiltration)
-- Good for: Temporal analysis, attack chains, gradual privilege escalation
-- Example: Detecting an attacker who first explores systems, then accesses sensitive data, then attempts download
-
-**Transformer (Attention-based)**:
-- Identifies which features are most important for each decision
-- Provides interpretable anomaly detection
-- Good for: Feature analysis, context-aware detection, understanding why something is anomalous
-- Example: Shows that an access is suspicious due to combination of unusual time + location + resource type
-
-**When to Use Deep Learning**:
-- Multi-step attack detection: LSTM
-- Feature importance analysis: Transformer
-- Limited data or quick baseline: Isolation Forest
-- Production deployment: Ensemble of all models
-
-## ITDR Capabilities
-
-AI Access Sentinel provides comprehensive Identity Threat Detection and Response capabilities:
-
-### Identity Attack Surface Monitoring
-- **Continuous visibility** into all identity-based access across the organization
-- **Real-time monitoring** of user and entity behavior patterns
-- **Attack path analysis** to identify potential lateral movement routes
-- **Privilege mapping** to understand the blast radius of compromised accounts
-
-### Credential Compromise Detection
-- **Anomalous authentication patterns**: Impossible travel, unusual times, new devices
-- **Suspicious access behavior**: Accessing resources never used before
-- **Brute force detection**: Multiple failed login attempts from same or different IPs
-- **Credential stuffing identification**: Same credentials used across multiple accounts
-
-### Privilege Escalation Prevention
-- **Peer-based access validation**: Compare requests against similar users
-- **Role deviation alerts**: Flag users with permissions outside their role cluster
-- **Temporary privilege tracking**: Monitor for privilege escalation attempts
-- **Administrative action monitoring**: Elevated scrutiny for admin-level operations
-
-### Lateral Movement Detection
-- **Cross-resource access patterns**: Identify unusual resource hopping
-- **Time-series behavioral analysis**: Detect rapid access to multiple systems
-- **Network segmentation awareness**: Flag access across security boundaries
-- **Entity relationship mapping**: Understand normal vs. abnormal access paths
-
-### Identity-Based Zero Trust
-- **Continuous authentication**: Real-time risk scoring for every access request
-- **Context-aware access control**: Location, time, device, behavior all factor into decisions
-- **Adaptive security posture**: Automatically increase scrutiny for high-risk users
-- **Just-in-time access validation**: Verify necessity for each access attempt
-
-### SIEM/SOAR Integration
-- **Structured alert format**: Easy integration with security operations platforms
-- **Automated response triggers**: Block/challenge high-risk access automatically
-- **Threat intelligence enrichment**: Correlate with external threat feeds
-- **Incident investigation support**: Detailed access forensics for IR teams
-
-## UEBA Features
-
-User and Entity Behavior Analytics (UEBA) powers the ITDR capabilities:
-
-### Behavioral Baselining
-- **Individual user profiles**: Learn normal patterns for each user (working hours, locations, resources)
-- **Peer group analysis**: Compare behavior against similar users (role, department, seniority)
-- **Entity behavior modeling**: Track service accounts, applications, and API usage
-- **Temporal pattern recognition**: Understand daily, weekly, and seasonal variations
-
-### Anomaly Detection
-- **Statistical outlier detection**: Identify behavior that deviates from established baselines
-- **Multi-dimensional analysis**: Consider time, location, resource, action, and context
-- **Anomaly severity scoring**: Prioritize alerts based on degree of deviation
-- **False positive reduction**: ML models adapt to reduce alert fatigue
-
-### Risk-Based Prioritization
-- **Dynamic risk scores**: User risk changes in real-time based on current behavior
-- **Contextual risk assessment**: Same action can be high-risk or normal based on context
-- **Risk aggregation**: Combine multiple low-risk events into high-risk patterns
-- **Automated triage**: Focus security teams on highest-risk activities
-
-### Advanced Analytics
-- **Graph-based access analysis**: Understand relationships between users, resources, and access patterns
-- **Sequence analysis**: Detect multi-step attack patterns (reconnaissance, access, exfiltration)
-- **Clustering and segmentation**: Automatically discover user groups and role patterns
-- Python 3.9+
-- pip package manager
-- Git
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/MikeDominic92/ai-access-sentinel.git
-cd ai-access-sentinel
-```
-
-2. Create virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-### Generate Synthetic Data
-
-```bash
-python -c "from src.data.generators import IAMDataGenerator; gen = IAMDataGenerator(); gen.generate_complete_dataset()"
-```
-
-This creates realistic IAM logs with 10,000+ records including normal and anomalous patterns.
-
-### Train Models
-
-```bash
-# Using Jupyter notebooks (recommended for learning)
-jupyter lab
-
-# Or train via Python script
-python -c "from src.models.anomaly_detector import AnomalyDetector; detector = AnomalyDetector(); detector.train_from_file('data/sample_iam_logs.csv')"
-```
-
-### Run API Server
-
-```bash
-uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-API will be available at `http://localhost:8000`
-
-Interactive docs: `http://localhost:8000/docs`
-
-### Launch Dashboard (Streamlit)
-
-```bash
-streamlit run dashboard/app.py
-```
-
-Dashboard will open at `http://localhost:8501`
-
-### Launch Frontend (React/Next.js)
-
-A modern React frontend is also available:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend will open at `http://localhost:3000`
-
-**Frontend Screenshots:**
-
-| Anomaly Detection | Risk Scoring | Role Mining |
-|-------------------|--------------|-------------|
-| ![Anomalies](docs/screenshots/anomalies_page_1764611111831.png) | ![Risk](docs/screenshots/risk_page_1764611125945.png) | ![Roles](docs/screenshots/roles_page_1764611139665.png) |
-
-See [Frontend Walkthrough](docs/FRONTEND_WALKTHROUGH.md) for full documentation.
-
-## API Documentation
-
-### Analyze Access Event
-
-```bash
-POST /api/v1/analyze/access
-Content-Type: application/json
-
-{
-  "user_id": "U001",
-  "resource": "financial_database",
-  "action": "read",
-  "timestamp": "2024-01-15T03:45:00Z",
-  "source_ip": "192.168.1.100",
-  "location": "New York, US"
-}
-
-Response:
-{
-  "is_anomaly": true,
-  "risk_score": 87.5,
-  "anomaly_score": -0.45,
-  "reasons": [
-    "Unusual time of access (outside business hours)",
-    "High-risk resource accessed",
-    "Different location than typical"
-  ],
-  "recommendation": "BLOCK"
+```python
+FACTOR_WEIGHTS = {
+    'anomaly_score':     22.5%,  # ML detection
+    'peer_deviation':    15.0%,  # vs similar users
+    'sensitive_access':  15.0%,  # high-value resources
+    'failed_attempts':   11.25%, # auth failures
+    'policy_violations': 11.25%, # rule breaches
+    'falcon_threat':     25.0%,  # CrowdStrike intel
 }
 ```
 
-### Get User Risk Score
+### Risk Levels
 
-```bash
-GET /api/v1/user/U001/risk-score
+| Score | Level | Action |
+|-------|-------|--------|
+| 0-30 | LOW | Monitor |
+| 31-60 | MEDIUM | Review |
+| 61-85 | HIGH | Investigate |
+| 86-100 | CRITICAL | Block + Alert |
 
-Response:
-{
-  "user_id": "U001",
-  "risk_score": 72.3,
-  "risk_level": "HIGH",
-  "factors": {
-    "anomaly_count": 12,
-    "peer_deviation": 2.5,
-    "sensitive_access": 8,
-    "policy_violations": 3
-  },
-  "recommendation": "Increase monitoring, require MFA"
-}
-```
+</td>
+<td width="50%">
 
-### Discover Roles
+### Example API Response
 
-```bash
-POST /api/v1/roles/discover
-
-Response:
-{
-  "clusters": 8,
-  "roles": [
-    {
-      "role_id": "R001",
-      "name": "Data Analysts",
-      "user_count": 45,
-      "common_resources": ["analytics_db", "reporting_tool"],
-      "description": "Users with data analysis access patterns"
-    },
-    ...
-  ]
-}
-```
-
-### Model Metrics
-
-```bash
-GET /api/v1/model/metrics
-
-Response:
-{
-  "anomaly_detector": {
-    "precision": 0.89,
-    "recall": 0.85,
-    "f1_score": 0.87,
-    "contamination": 0.05
-  },
-  "access_predictor": {
-    "accuracy": 0.92,
-    "precision": 0.90,
-    "recall": 0.88
-  }
-}
-```
-
-### v1.1: CrowdStrike Falcon ITDR Endpoints
-
-#### Receive Falcon Webhook
-
-```bash
-POST /api/v1/falcon/webhook
-Content-Type: application/json
-
-[
-  {
-    "alertId": "falcon-alert-12345",
-    "type": "CredentialTheft",
-    "timestamp": "2025-12-04T10:30:00Z",
-    "user": {
-      "id": "U001",
-      "name": "john.doe",
-      "userPrincipalName": "john.doe@company.com"
-    },
-    "sourceIp": "192.168.1.100",
-    "severity": "high",
-    "confidence": 0.85,
-    "tactics": ["TA0006"],
-    "techniques": ["T1110"]
-  }
-]
-
-Response:
-{
-  "status": "processed",
-  "events_processed": 1,
-  "correlations_found": 1,
-  "alerts_generated": 1,
-  "correlated_alerts": [
-    {
-      "correlation_id": "corr-abc123",
-      "correlation_confidence": "HIGH",
-      "correlation_score": 85.5,
-      "falcon_alert_type": "credential_theft",
-      "ml_anomaly_detected": true,
-      "combined_risk_level": "CRITICAL",
-      "recommendations": [
-        "CRITICAL: Active Falcon ITDR alert - initiate incident response",
-        "Recommend temporary access suspension pending investigation"
-      ]
-    }
-  ],
-  "processing_time_ms": 45.2
-}
-```
-
-#### Get Falcon-Enriched Risk Score
-
-```bash
-GET /api/v1/falcon/user/U001/risk
-
-Response:
+```json
 {
   "user_id": "U001",
   "risk_score": 78.5,
@@ -457,240 +269,230 @@ Response:
     "policy_violations": 55.0,
     "falcon_threat": 85.0
   },
-  "falcon_enabled": true,
   "falcon_context": {
     "active_alerts": 2,
-    "alert_types": ["credential_theft", "lateral_movement"],
+    "alert_types": ["credential_theft"],
     "max_severity": "high"
   },
   "recommendations": [
-    "HIGH: Falcon threat intelligence indicates compromise risk",
-    "Review CrowdStrike Falcon console for detailed indicators",
-    "Require immediate security review"
+    "HIGH: Active threat detected",
+    "Initiate incident response"
   ]
 }
 ```
 
-#### Get Falcon Connection Status
+</td>
+</tr>
+</table>
+
+---
+
+## Quick Start
+
+### Prerequisites
+- Python 3.9+
+- pip package manager
+
+### Installation
 
 ```bash
-GET /api/v1/falcon/status
+# Clone repository
+git clone https://github.com/MikeDominic92/ai-access-sentinel.git
+cd ai-access-sentinel
 
-Response:
-{
-  "connected": true,
-  "api_version": "1.1.0",
-  "last_sync": "2025-12-04T14:30:00Z",
-  "alerts_fetched": 47
-}
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
 ```
 
-#### Sync Falcon Alerts
+### Run the Platform
 
 ```bash
-POST /api/v1/falcon/sync
+# Start API Server
+uvicorn src.api.main:app --reload --port 8000
 
-Response:
-{
-  "status": "synced",
-  "alerts_fetched": 25,
-  "total_cached": 72,
-  "last_sync": "2025-12-04T14:35:00Z"
-}
+# Start Dashboard (new terminal)
+streamlit run dashboard/app.py
+
+# Start Frontend (new terminal)
+cd frontend && npm install && npm run dev
 ```
+
+### Access Points
+- **API Docs**: http://localhost:8000/docs
+- **Dashboard**: http://localhost:8501
+- **Frontend**: http://localhost:3000
+
+---
+
+## API Endpoints
+
+### Core Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/analyze/access` | Analyze single access event |
+| POST | `/api/v1/analyze/batch` | Batch analysis |
+| GET | `/api/v1/user/{id}/risk-score` | Get user risk score |
+| POST | `/api/v1/roles/discover` | ML role mining |
+| GET | `/api/v1/model/metrics` | Model performance |
+
+### Falcon ITDR Endpoints (v1.1)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/falcon/webhook` | Receive Falcon alerts |
+| GET | `/api/v1/falcon/status` | Connection status |
+| GET | `/api/v1/falcon/user/{id}/risk` | Falcon-enriched risk |
+| POST | `/api/v1/falcon/sync` | Manual alert sync |
+| GET | `/api/v1/falcon/correlations` | View correlations |
+
+---
 
 ## Use Cases
 
-### 1. Credential Compromise Detection (ITDR)
-**Scenario**: Attacker compromises employee credentials through phishing.
+<table>
+<tr>
+<td width="50%">
 
-**Detection**: UEBA detects impossible travel (login from US, then Russia 10 minutes later), unusual resource access, and abnormal time of access. Risk score jumps to 95.
+### 1. Credential Compromise Detection
 
-**ITDR Response**: Automatically blocks access, forces password reset, triggers MFA verification, alerts SOC team.
+**Scenario**: Attacker steals employee credentials via phishing.
 
-**Outcome**: Credential-based attack stopped before lateral movement begins.
+**Detection**:
+- Impossible travel (NY to Russia in 10 min)
+- Unusual resource access pattern
+- Off-hours authentication
 
-### 2. Insider Threat Detection (UEBA)
-**Scenario**: Employee planning to leave company starts accessing sensitive files outside normal hours.
+**Response**: Block access, force MFA, alert SOC.
 
-**Detection**: Anomaly detector flags unusual time + resource combination + volume spike. UEBA identifies deviation from established baseline.
+**Outcome**: Attack stopped before lateral movement.
 
-**Action**: Security team receives high-priority alert, reviews activity timeline, discovers data exfiltration attempt.
+</td>
+<td width="50%">
 
-**Outcome**: Insider threat neutralized, access revoked, incident documented for legal team.
+### 2. Insider Threat Detection
 
-### 3. Privilege Escalation Prevention (ITDR)
-**Scenario**: Compromised low-privilege account attempts to request admin access to production database.
+**Scenario**: Employee downloads sensitive files before resignation.
 
-**Analysis**: Access predictor checks peer group - 0% of similar users have this access. ITDR detects privilege escalation pattern.
+**Detection**:
+- Volume spike in data access
+- Off-hours activity increase
+- Access to unusual resources
 
-**Action**: Request automatically denied, SOC alerted, account flagged for investigation.
+**Response**: Alert security, review access logs.
 
-**Outcome**: Lateral movement blocked at privilege escalation stage.
+**Outcome**: Data exfiltration prevented.
 
-### 4. Lateral Movement Detection (ITDR)
-**Scenario**: Attacker moves from compromised marketing account to finance systems.
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-**Detection**: UEBA detects unusual cross-departmental resource access pattern. Sequence analysis identifies reconnaissance-to-access pattern typical of lateral movement.
+### 3. Privilege Escalation Prevention
 
-**ITDR Response**: Isolate account, block access to additional resources, initiate incident response.
+**Scenario**: Compromised account requests admin access.
 
-**Outcome**: Attack contained to single compromised account, no data breach.
+**Detection**:
+- 0% of peer group has this access
+- Escalation pattern matches known attacks
+- Falcon alert: T1078
 
-### 5. Role Optimization
-**Scenario**: Company has 200+ custom roles, many overlapping, creating identity attack surface bloat.
+**Response**: Deny request, flag account.
 
-**Discovery**: Role mining clusters users into 15 natural groups based on actual access. Identifies 85 ghost permissions and 30 over-privileged accounts.
+**Outcome**: Lateral movement blocked.
 
-**Action**: IAM team consolidates roles, reducing complexity by 85% and shrinking identity attack surface.
+</td>
+<td width="50%">
 
-**Outcome**: Simplified access management, reduced risk, improved compliance posture.
+### 4. Role Optimization
 
-### 6. Compliance Monitoring
-**Scenario**: Need to identify users with excessive privileges for SOX/HIPAA compliance.
+**Scenario**: 200+ custom roles with overlap.
 
-**Analysis**: Risk scorer identifies top 10% of users with abnormal access patterns. UEBA flags users accessing sensitive data outside job requirements.
+**Discovery**:
+- ML clusters users into 15 natural groups
+- Identifies 85 ghost permissions
+- Finds 30 over-privileged accounts
 
-**Action**: Automated access recertification triggered for high-risk users, audit trail generated.
+**Action**: Consolidate roles, reduce attack surface.
 
-**Outcome**: Compliance requirements met, excessive privileges revoked, documented remediation.
+**Outcome**: 85% complexity reduction.
+
+</td>
+</tr>
+</table>
+
+---
 
 ## Project Structure
 
 ```
 ai-access-sentinel/
 ├── src/
-│   ├── data/          # Data generation and preprocessing
-│   ├── models/        # ML models (anomaly, prediction, clustering)
-│   ├── api/           # FastAPI REST endpoints
-│   └── utils/         # Visualization and helpers
-├── notebooks/         # Jupyter notebooks for experimentation
-├── dashboard/         # Streamlit web dashboard
-├── tests/            # Unit and integration tests
-├── docs/             # Documentation and ADRs
-└── docker/           # Containerization
+│   ├── api/                 # FastAPI REST endpoints
+│   │   ├── main.py          # Application entry point
+│   │   └── schemas.py       # Pydantic models + Falcon schemas
+│   ├── models/              # ML models
+│   │   ├── anomaly_detector.py
+│   │   ├── access_predictor.py
+│   │   ├── role_miner.py
+│   │   └── risk_scorer.py   # 6-factor model
+│   ├── integrations/        # v1.1: External integrations
+│   │   ├── crowdstrike_connector.py
+│   │   ├── falcon_event_parser.py
+│   │   └── alert_correlator.py
+│   └── data/                # Data generators
+├── dashboard/               # Streamlit dashboard
+├── frontend/                # React/Next.js UI
+├── notebooks/               # Jupyter experiments
+├── tests/                   # Test suite (96% coverage)
+└── docs/                    # Documentation
 ```
 
-## Development
+---
 
-### Running Tests
+## Skills Demonstrated
 
-```bash
-pytest tests/ -v --cov=src
-```
+This project demonstrates proficiency in:
 
-## Deployment Verification
+| Category | Technologies |
+|----------|-------------|
+| **Machine Learning** | scikit-learn, TensorFlow, LSTM, Transformer, Isolation Forest |
+| **Backend Development** | Python, FastAPI, Pydantic, async/await |
+| **API Integration** | CrowdStrike FalconPy SDK, OAuth2, Webhooks |
+| **Data Engineering** | pandas, numpy, feature engineering |
+| **Security** | ITDR, UEBA, MITRE ATT&CK, Zero Trust |
+| **Frontend** | React, Next.js, Streamlit |
+| **DevOps** | Docker, pytest, CI/CD |
 
-This project is fully functional with working ML models, ITDR capabilities, and UEBA features. Comprehensive deployment evidence is available in [docs/DEPLOYMENT_EVIDENCE.md](docs/DEPLOYMENT_EVIDENCE.md).
-
-### Quick Verification Commands
-
-```bash
-# 1. Start FastAPI server
-uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
-
-# 2. Test anomaly detection
-curl -X POST http://localhost:8000/api/v1/analyze/access \
-  -H "Content-Type: application/json" \
-  -d '{"user_id":"U123","resource":"database","action":"read","timestamp":"2024-11-30T03:00:00Z"}'
-
-# 3. Get user risk score
-curl http://localhost:8000/api/v1/user/U123/risk-score
-
-# 4. Launch Streamlit dashboard
-streamlit run dashboard/app.py
-# Open http://localhost:8501
-```
-
-### Sample Evidence Included
-
-The deployment evidence documentation provides:
-- Anomaly detection API response with 94% confidence
-- User risk scoring with detailed factor breakdown
-- Role mining cluster results (8 discovered roles)
-- ML model training outputs (96%+ accuracy)
-- Streamlit dashboard screenshots and features
-- Test execution results with 96% code coverage
-
-See [Deployment Evidence](docs/DEPLOYMENT_EVIDENCE.md) for complete verification and outputs.
-
-### Code Quality
-
-```bash
-# Linting
-flake8 src/ tests/
-
-# Type checking
-mypy src/
-
-# Format
-black src/ tests/
-```
-
-### Docker Deployment
-
-```bash
-docker-compose up -d
-```
-
-Services:
-- API: `http://localhost:8000`
-- Dashboard: `http://localhost:8501`
+---
 
 ## Roadmap
 
-### Phase 1 (Completed)
-- [x] Anomaly detection with Isolation Forest
-- [x] Access prediction with Random Forest
-- [x] Role mining with K-Means
-- [x] Risk scoring engine
-- [x] FastAPI REST API
-- [x] Streamlit dashboard
-- [x] Deep learning models (LSTM and Transformer)
-- [x] Multi-step attack pattern detection
-- [x] Attention-based feature analysis
+- [x] **v1.0**: Core ML models (Anomaly, Prediction, Clustering)
+- [x] **v1.1**: CrowdStrike Falcon ITDR integration
+- [ ] **v2.0**: Real-time streaming (Apache Kafka)
+- [ ] **v2.1**: SIEM integration (Splunk, Sentinel)
+- [ ] **v3.0**: SOAR automated remediation
 
-### Phase 2 (Next)
-- [ ] Advanced UEBA features (entity behavior profiling, advanced peer analysis)
-- [ ] Real-time streaming with Apache Kafka for instant ITDR response
-- [ ] Graph-based identity attack path analysis (NetworkX)
-- [ ] Deep learning model ensemble for production
-- [ ] SIEM system integration (Splunk, Sentinel, QRadar)
-- [ ] Threat intelligence feed integration for credential compromise detection
-
-### Phase 3 (Future)
-- [ ] SOAR (Security Orchestration) integration for automated ITDR workflows
-- [ ] Automated remediation and response playbooks
-- [ ] Natural language policy queries and threat hunting
-- [ ] Multi-tenant ITDR support for MSPs
-- [ ] Cloud IAM integration (AWS IAM Identity Center, Azure AD, Okta)
-- [ ] Identity attack surface reduction recommendations
-- [ ] Zero trust architecture scoring and recommendations
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-## Security
-
-See [docs/SECURITY.md](docs/SECURITY.md) for security considerations and responsible disclosure.
-
-## License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
+---
 
 ## Author
 
 **Mike Dominic**
 - GitHub: [@MikeDominic92](https://github.com/MikeDominic92)
-- Portfolio Project: IAM + AI/ML convergence
-
-## Acknowledgments
-
-- Inspired by real-world IAM challenges in enterprise environments
-- Built as a portfolio demonstration of ML engineering + security expertise
-- Uses industry-standard algorithms and best practices
+- Focus: IAM Security + AI/ML
 
 ---
 
-**Note**: This is a demonstration project using synthetic data. For production use, integrate with actual IAM logs and undergo thorough security review.
+<p align="center">
+  <strong>Built to demonstrate enterprise ITDR capabilities with modern ML techniques.</strong>
+  <br/>
+  <sub>This is a portfolio project using synthetic data. Production deployment requires security review.</sub>
+</p>
