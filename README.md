@@ -477,12 +477,28 @@ This project demonstrates proficiency in:
 
 **Mike Dominic**
 - GitHub: [@MikeDominic92](https://github.com/MikeDominic92)
-- Focus: IAM Security + AI/ML
+- Focus: IAM Governance, Role Attestation, Access Analytics
+
+---
+
+## Chainguard IT Engineer (Identity/IAM) Alignment
+
+This project demonstrates key competencies for senior IAM engineering roles:
+
+| Requirement | Evidence |
+|-------------|----------|
+| Role attestation processes | Role attestation engine in `src/attestation/` |
+| Segregation of duties assessments | SoD conflict detection and review campaigns |
+| IAM governance and RBAC | Role mining and permission analysis |
+| Access review automation | Campaign management and decision tracking |
+| Compliance reporting | SOC 2/ISO 27001/NIST evidence generation |
+
+See also: `src/attestation/README.md` for role attestation documentation.
 
 ---
 
 <p align="center">
-  <strong>Built to demonstrate enterprise ITDR capabilities with modern ML techniques.</strong>
+  <strong>AI-Powered Identity Governance with Role Attestation</strong>
   <br/>
-  <sub>This is a portfolio project using synthetic data. Production deployment requires security review.</sub>
+  <sub>Demonstrates Role Attestation, SoD Detection, Access Analytics, and Compliance Automation</sub>
 </p>
