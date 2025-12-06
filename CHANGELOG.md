@@ -5,6 +5,93 @@ All notable changes to AI Access Sentinel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-12-05
+
+### Added - Role Attestation Engine & SoD Detection
+
+This release adds enterprise role attestation capabilities with Segregation of Duties (SoD) conflict detection, campaign management, and compliance evidence generation.
+
+#### Role Attestation Engine (`src/attestation/`)
+
+- **AttestationEngine** (`attestation_engine.py`)
+  - Campaign-based role attestation workflows
+  - Support for attestation types:
+    - **Role Definition Attestation** - Validate role permissions match job functions
+    - **Role Assignment Attestation** - Verify users should have assigned roles
+    - **Privileged Access Attestation** - Enhanced review for admin/elevated roles
+  - Attestation decision tracking (certified, revoked, modified)
+  - Multi-level reviewer support (manager, role owner, security team)
+  - Evidence capture for audit compliance
+
+- **SoD Conflict Detector** (`sod_detector.py`)
+  - Rule-based Segregation of Duties detection
+  - Pre-built conflict rules:
+    - Approve vs Process payments
+    - Create vs Approve purchase orders
+    - Admin vs Audit functions
+    - Development vs Production access
+  - Conflict severity levels (CRITICAL, HIGH, MEDIUM, LOW)
+  - Custom rule definition support
+  - Conflict remediation recommendations
+
+- **Campaign Manager** (`campaign_manager.py`)
+  - Attestation campaign lifecycle management
+  - Campaign types:
+    - Quarterly access reviews
+    - Annual role certification
+    - SoD conflict resolution
+    - Privileged access reviews
+  - Deadline tracking and escalation
+  - Completion rate monitoring
+  - Reminder notifications
+
+#### New API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/attestation/campaigns` | Create attestation campaign |
+| GET | `/api/v1/attestation/campaigns/{id}` | Get campaign status |
+| POST | `/api/v1/attestation/decisions` | Submit attestation decision |
+| GET | `/api/v1/sod/conflicts` | List SoD conflicts |
+| POST | `/api/v1/sod/rules` | Create custom SoD rule |
+| GET | `/api/v1/attestation/evidence/{campaign_id}` | Export attestation evidence |
+
+#### Pydantic Schemas
+
+- `AttestationCampaign` - Campaign definition and status
+- `AttestationDecision` - Reviewer decision with justification
+- `SoDConflict` - Detected conflict with severity and remediation
+- `SoDRule` - Conflict detection rule definition
+- `AttestationEvidence` - Audit-ready evidence package
+
+### Why This Matters
+
+This release addresses critical IAM governance requirements:
+
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| Roles accumulate unused permissions | Role definition attestation | Right-sized roles, reduced attack surface |
+| Access creep goes undetected | Role assignment attestation | Users have only needed access |
+| SoD conflicts enable fraud | Automated conflict detection | Fraud prevention, compliance |
+| Audit evidence is scattered | Campaign-based evidence capture | SOC 2/ISO 27001 audit-ready |
+
+### Interview Questions This Answers
+
+| Question | How This Feature Answers It |
+|----------|----------------------------|
+| "How do you implement role attestation?" | Campaign-based attestation with multi-level reviewers |
+| "How do you detect SoD conflicts?" | Rule-based detection with severity scoring |
+| "How do you ensure least privilege?" | Regular role definition reviews with evidence |
+| "How do you prepare for compliance audits?" | Campaign evidence packages for SOC 2/ISO 27001 |
+
+### Compliance Alignment
+- **SOC 2 CC6.1**: Role-based access controls with attestation
+- **SOC 2 CC6.3**: Access authorization through attestation decisions
+- **ISO 27001 A.5.18**: Access rights review through campaigns
+- **ISO 27001 A.8.2**: Privileged access attestation
+
+---
+
 ## [1.1.0] - 2025-12-04
 
 ### Added

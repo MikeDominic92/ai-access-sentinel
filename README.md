@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.104+-green.svg" alt="FastAPI"/>
   <img src="https://img.shields.io/badge/scikit--learn-1.3+-orange.svg" alt="scikit-learn"/>
   <img src="https://img.shields.io/badge/CrowdStrike-Falcon_ITDR-red.svg" alt="CrowdStrike"/>
-  <img src="https://img.shields.io/badge/version-1.1.0-purple.svg" alt="Version"/>
+  <img src="https://img.shields.io/badge/version-1.2.0-purple.svg" alt="Version"/>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/>
 </p>
 
